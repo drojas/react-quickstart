@@ -3,7 +3,6 @@
 var path        = require('path');
 var url         = require('url');
 var express     = require('express');
-var browserify  = require('connect-browserify');
 var ReactAsync  = require('react-async');
 var nodejsx     = require('node-jsx').install();
 var App         = require('./client');
@@ -33,11 +32,12 @@ var api = express()
 var app = express();
 
 if (development) {
-  app.get('/assets/bundle.js',
-    browserify('./client', {
-      debug: true,
-      watch: true
-    }));
+  var webpackMiddleware = require('webpack-dev-middleware');
+  var webpack = require("webpack");
+  var compiler = webpack(require('./webpack.config.js'));
+  app.use(webpackMiddleware(compiler, {
+    publicPath: '/assets/'
+  }));
 }
 
 app

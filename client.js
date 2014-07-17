@@ -38,7 +38,7 @@ var UserPage = React.createClass({
         });
     }
   },
-  
+
   getInitialStateAsync: function(cb) {
     this.type.getUserInfo(this.props.username, cb);
   },
