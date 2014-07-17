@@ -1,16 +1,17 @@
+'use strict';
 
 var path = require('path');
 
 module.exports = {
-  entry: "./client.js",
+  entry: path.join(__dirname, 'index.js'),
   output: {
-    path: path.join(__dirname, 'assets'),
     filename: 'bundle.js',
+    path: '/assets'
   },
   module: {
     loaders: [
       { test: /\.css$/, loader: "style!css" },
-      { test: /\.js$/, loader: "jsx-loader?harmony" }
+      { test: /\.js$/, loader: "jsx-loader" }
     ]
   }
 };

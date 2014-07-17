@@ -33,7 +33,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "supervisor -i node_modules -e js,jsx server.js",
+    "start": "supervisor -i node_modules -e js,jsx src/js/server/index.js",
     "build": "gulp",
     "start-prod": "NODE_ENV=production node server.js",
     "clean": "rm -f ./assets/bundle.js"
