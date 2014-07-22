@@ -26,7 +26,7 @@ var app = express();
 if (development) {
   var webpackMiddleware = require('webpack-dev-middleware');
   var webpack = require("webpack");
-  var compiler = webpack(require('../client/webpack.config.js'));
+  var compiler = webpack(require('../../../webpack.client-config.js'));
   app.use(webpackMiddleware(compiler, {
     publicPath: '/assets/'
   }));

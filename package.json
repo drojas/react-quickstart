@@ -25,7 +25,8 @@
     "webpack": "~1.3.1-beta9",
     "jsx-loader": "~0.10.2",
     "gulp-webpack": "~0.1.0",
-    "gulp": "~3.8.6"
+    "gulp": "~3.8.6",
+    "del": "~0.1.1"
   },
   "devDependencies": {
     "supervisor": "~0.6.0",
@@ -35,7 +36,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "supervisor -i node_modules -e js,jsx src/js/server/index.js",
     "build": "gulp",
-    "start-prod": "NODE_ENV=production node server.js",
+    "start-prod": "NODE_ENV=production node src/js/server/index.js",
     "clean": "rm -f ./assets/bundle.js"
   },
   "author": "",

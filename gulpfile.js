@@ -1,12 +1,26 @@
-var path    = require('path');
-var gulp    = require('gulp');
-var webpack = require('gulp-webpack');
+'use strict';
 
-var CLIENT_PATH = path.join(__dirname, 'src/js/client');
+var path          = require('path');
+var gulp          = require('gulp');
+var webpack       = require('gulp-webpack');
+var del           = require('del');
+var clientConfig  = require('./webpack.client-config.js');
 
-gulp.task('default', function() {
-  var clientConfig = require(path.join(CLIENT_PATH, 'webpack.config.js'));
-  return gulp.src('src/js/client')
-    .pipe(webpack(clientConfig))
-    .pipe(gulp.dest('assets/'));
+var paths = {
+  client: {
+    src: 'src/js/client/index.js',
+    dest: 'assets/'
+  }
+};
+
+gulp.task('clean', function(cb) {
+  del(['assets'], cb);
 });
+
+gulp.task('client', ['clean'], function() {
+  return gulp.src(paths.client.src)
+    .pipe(webpack(clientConfig))
+    .pipe(gulp.dest(paths.client.dest));
+});
+
+gulp.task('default', ['client']);
