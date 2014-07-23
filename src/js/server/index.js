@@ -7,27 +7,18 @@ var ReactAsync  = require('react-async');
 var nodejsx     = require('node-jsx').install();
 var Client      = require('../client');
 var api         = require('../api');
+var renderApp   = require('./middleware/render-app');
 
 var development = process.env.NODE_ENV !== 'production';
-
-function renderApp(req, res, next) {
-  var path   = url.parse(req.url).pathname;
-  var client = Client({path: path});
-  var sendResponse = function(err, markup) {
-    if (err) return next(err)
-    res.send('<!doctype html>\n' + markup);
-  };
-  ReactAsync.renderComponentToStringWithAsyncState(client, sendResponse);
-}
-
 
 var app = express();
 
 if (development) {
-  var webpackMiddleware = require('webpack-dev-middleware');
-  var webpack = require("webpack");
-  var compiler = webpack(require('../../../webpack.client-config.js'));
-  app.use(webpackMiddleware(compiler, {
+  var webpack             = require("webpack");
+  var webpackMiddleware   = require('webpack-dev-middleware');
+  var webpackClientConfig = require('../../../webpack.client-config.js')
+  var clientCompiler      = webpack(webpackClientConfig);
+  app.use(webpackMiddleware(clientCompiler, {
     publicPath: '/assets/'
   }));
 }
