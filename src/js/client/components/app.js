@@ -7,6 +7,7 @@ var React           = require('react');
 var ReactRouter     = require('react-router-component');
 var MainPage        = require('./main-page');
 var UserPage        = require('./user-page');
+var SignInPage      = require('./sign-in-page');
 var NotFoundHandler = require('./not-found');
 var NotFound        = ReactRouter.NotFound;
 var Pages           = ReactRouter.Pages;
@@ -23,6 +24,7 @@ var App = React.createClass({
         </head>
         <Pages className="App" path={this.props.path}>
           <Page path="/" handler={MainPage} />
+          <Page path="/sign-in" handler={SignInPage} />
           <Page path="/users/:username" handler={UserPage} />
           <NotFound handler={NotFoundHandler} />
         </Pages>

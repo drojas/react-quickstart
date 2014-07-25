@@ -1,7 +1,11 @@
 'use strict';
 
+/* preamble */
+
 // backbone <- jquery
 require('backbone').$ = require('jquery');
+
+/* end preamble */
 
 var App = require('./components/app');
 
