@@ -1,6 +1,10 @@
 'use strict';
 
-module.exports = function renderApp(req, res, next) {
+var url         = require('url');
+var ReactAsync  = require('react-async');
+var Client      = require('../../client');
+
+module.exports = function (req, res, next) {
   var path   = url.parse(req.url).pathname;
   var client = Client({path: path});
   var sendResponse = function(err, markup) {

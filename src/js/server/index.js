@@ -1,11 +1,8 @@
 'use strict';
 
 var path        = require('path');
-var url         = require('url');
 var express     = require('express');
-var ReactAsync  = require('react-async');
 var nodejsx     = require('node-jsx').install();
-var Client      = require('../client');
 var api         = require('../api');
 var renderApp   = require('./middleware/render-app');
 
