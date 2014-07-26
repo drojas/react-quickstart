@@ -1,6 +1,7 @@
 'use strict';
 
 var superagent = require('superagent');
+var navigate   = require('../../helpers/navigate');
 
 var SignInStore = {
   schema: { auth: { token: null, status: null } },
@@ -25,6 +26,7 @@ function makeLoginDigestFun(model, remember) {
     } else {
       setToken(model, res.body.token, remember);
       setAuthStatus(model, 'AUTH.AUTHENTICATED');
+      navigate('/')
     }
   };
 }

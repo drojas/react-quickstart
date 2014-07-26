@@ -21,14 +21,34 @@ var App = React.createClass({
     return model.val();
   },
 
-  componentDidMount: function() {
+  handlePopState: function() {
+    this.forceUpdate();
+  },
+
+  listenToModel: function() {
     model.on('update', function(updatedModel) {
       this.setState(updatedModel.val());
     }.bind(this));
   },
 
-  componentWillUnmount: function() {
+  listenToPopState: function() {
+    window.addEventListener('popstate', this.handlePopState);
+  },
+
+  stopListeningToModel: function() {
     model.off('update');
+  },
+
+  stopListeningToPopState: function() {
+    window.removeEventListener('popstate', this.handlePopState);
+  },
+
+  componentDidMount: function() {
+    this.listenToModel();
+    this.listenToPopState();
+  },
+
+  componentWillUnmount: function() {
   },
 
   render: function() {

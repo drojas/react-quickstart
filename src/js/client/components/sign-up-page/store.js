@@ -1,7 +1,7 @@
 'use strict';
 
 var superagent = require('superagent');
-var AppDispatcher = require('../../dispatcher/app-dispatcher');
+var navigate   = require('../../helpers/navigate');
 
 var SignUpStore = {
   schema: { signup: { status: null } },
@@ -39,8 +39,4 @@ function setSignUpStatus(model, status) {
   }
   // push the auth change to the view, so it can be rendered
   model.signup.status.set(status);
-}
-
-function navigate(path) {
-  history.pushState(history.state, '', path);
 }
