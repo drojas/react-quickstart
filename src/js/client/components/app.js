@@ -22,9 +22,8 @@ var App = React.createClass({
 
   componentDidMount: function() {
     model.on('update', function(updatedModel) {
-      debugger;
-      this.setState(updatedModel);
-    });
+      this.setState(updatedModel.val());
+    }.bind(this));
   },
 
   componentWillUnmount: function() {

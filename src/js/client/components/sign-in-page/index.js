@@ -4,10 +4,11 @@
 'use strict';
 
 var React         = require('react');
-var ReactRouter   = require('react-router-component');
 var SignInActions = require('./actions');
 var SignInStore   = require('./store');
-var Link          = ReactRouter.Link;
+var model         = require('../../model');
+
+model.addStore('signin', SignInStore);
 
 var SignInPage = React.createClass({
 

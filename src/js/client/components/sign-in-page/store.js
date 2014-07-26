@@ -1,58 +1,35 @@
+'use strict';
 
-var Cortex        = require('cortexjs');
 var superagent    = require('superagent');
-var model         = require('../../model');
-var AppDispatcher = require('../../dispatcher/app-dispatcher');
-
-/* Initialize model data for this store
- *
- * This needs some thinking about how to integrate well with other
- * components/domains
- *
- * Also, I want to set backend synchronization and local storage
- * for this domain in this file only.
- */
-model.add('auth', {
-  token: null,
-  status: null
-});
-
-// Register to handle all updates
-AppDispatcher.on('all', function(eventName, payload) {
-  var test = /^signin\:(\w+)$/;
-  var validEventName = eventName.match(test);
-  if (!validEventName) return;
-  var actionName = validEventName[1];
-  if (!(SignInStore.hasOwnProperty(actionName))) {
-    var err = 'No handler function for `' + actionName + '` available in store.';
-    throw new Error(err);
-  }
-  SignInStore[actionName](payload);
-});
 
 var SignInStore = {
-  signin: function(username, password, remember) {
-    superagent
-      .post('http://localhost:3000/api/auth-token/')
-      .auth(username, password)
-      .end(makeLoginDigestFun(remember));
+  schema: { auth: { token: null, status: null } },
+  handlers: {
+    signin: function(model, userData) {
+      superagent
+        .post('http://localhost:3000/api/auth-token/')
+        .auth(userData.username, userData.password)
+        .end(makeLoginDigestFun(model, userData.remember));
+    }
   }
 };
 
 module.exports = SignInStore;
 
-function makeLoginDigestFun(remember) {
+// private methods
+
+function makeLoginDigestFun(model, remember) {
   return function (err, res) {
     if (!res.ok) {
-      setAuthStatus('AUTH.FAILED');
+      setAuthStatus(model, 'AUTH.FAILED');
     } else {
-      setToken(res.body.token, remember);
-      setAuthStatus('AUTH.AUTHENTICATED');
+      setToken(model, res.body.token, remember);
+      setAuthStatus(model, 'AUTH.AUTHENTICATED');
     }
   };
 }
 
-function setToken(token, remember) {
+function setToken(model, token, remember) {
   model.auth.token.set(token);
   // store the token in Storage
   if (remember) {
@@ -62,7 +39,7 @@ function setToken(token, remember) {
   }
 }
 
-function setAuthStatus(status) {
+function setAuthStatus(model, status) {
   // remove the token from system if you are not authenticated
   if (status !== 'AUTH.AUTHENTICATED') {
       localStorage.removeItem('TOKEN_STORAGE_KEY');
