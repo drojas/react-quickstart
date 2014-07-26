@@ -24,6 +24,29 @@ model.closeStore = function(eventsNamespace) {
   AppDispatcher.off(eventsNamespace);
 };
 
+model.getMixin = function() {
+  return {
+
+    getInitialState: function() {
+      return model.val();
+    },
+
+    listenToModel: function() {
+      model.on('update', function(updatedModel) {
+        this.setState(updatedModel.val());
+      }.bind(this));
+    },
+
+    stopListeningToModel: function() {
+      model.off('update');
+    },
+
+    componentDidMount: function() {
+      this.listenToModel();
+    }
+  }
+};
+
 module.exports = model;
 
 

@@ -5,6 +5,7 @@
 
 var React           = require('react');
 var ReactRouter     = require('react-router-component');
+var popStateMixin   = require('./mixins/pop-state');
 var MainPage        = require('./main-page');
 var UserPage        = require('./user-page');
 var SignInPage      = require('./sign-in-page');
@@ -17,39 +18,7 @@ var Page            = ReactRouter.Page;
 
 var App = React.createClass({
 
-  getInitialState: function() {
-    return model.val();
-  },
-
-  handlePopState: function() {
-    this.forceUpdate();
-  },
-
-  listenToModel: function() {
-    model.on('update', function(updatedModel) {
-      this.setState(updatedModel.val());
-    }.bind(this));
-  },
-
-  listenToPopState: function() {
-    window.addEventListener('popstate', this.handlePopState);
-  },
-
-  stopListeningToModel: function() {
-    model.off('update');
-  },
-
-  stopListeningToPopState: function() {
-    window.removeEventListener('popstate', this.handlePopState);
-  },
-
-  componentDidMount: function() {
-    this.listenToModel();
-    this.listenToPopState();
-  },
-
-  componentWillUnmount: function() {
-  },
+  mixins: [model.getMixin(), popStateMixin],
 
   render: function() {
     return (
