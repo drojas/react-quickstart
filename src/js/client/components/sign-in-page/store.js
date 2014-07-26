@@ -1,6 +1,6 @@
 'use strict';
 
-var superagent    = require('superagent');
+var superagent = require('superagent');
 
 var SignInStore = {
   schema: { auth: { token: null, status: null } },

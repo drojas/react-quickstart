@@ -3,6 +3,9 @@
 var express = require('express');
 
 var api = express()
+  .post('/sign-up', function(req, res) {
+    res.send(200);
+  })
   .post('/auth-token', function(req, res) {
     res.send({token: 'fake-token'});
   })

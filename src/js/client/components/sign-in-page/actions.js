@@ -8,7 +8,7 @@ var SigInActions = {
       username: username,
       password: password,
       remember: remember
-    })
+    });
   }
 };
 
