@@ -1,3 +1,4 @@
+// todo: rename to "app"?
 'use strict';
 
 /* preamble */

@@ -17,8 +17,10 @@ var Pages           = ReactRouter.Pages;
 var Page            = ReactRouter.Page;
 
 var App = React.createClass({
-
-  mixins: [model.getMixin(), popStateMixin],
+  mixins: [
+    model.getMixin(),
+    popStateMixin
+  ],
 
   render: function() {
     return (
