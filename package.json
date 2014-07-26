@@ -14,7 +14,8 @@
     "jsx-loader": "~0.10.2",
     "gulp-webpack": "~0.1.0",
     "gulp": "~3.8.6",
-    "del": "~0.1.1"
+    "del": "~0.1.1",
+    "cortexjs": "~0.6.0"
   },
   "devDependencies": {
     "supervisor": "~0.6.0",

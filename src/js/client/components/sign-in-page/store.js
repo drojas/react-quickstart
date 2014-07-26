@@ -1,18 +1,21 @@
 
+var Cortex        = require('cortexjs');
 var superagent    = require('superagent');
+var model         = require('../../model');
 var AppDispatcher = require('../../dispatcher/app-dispatcher');
 
-var _token = null;
-var _status = null;
-
-var SignInStore = {
-  signin: function(username, password, remember) {
-    superagent
-      .post('http://localhost:3000/api/auth-token/')
-      .auth(username, password)
-      .end(makeLoginDigestFun(remember));
-  }
-};
+/* Initialize model data for this store
+ *
+ * This needs some thinking about how to integrate well with other
+ * components/domains
+ *
+ * Also, I want to set backend synchronization and local storage
+ * for this domain in this file only.
+ */
+model.add('auth', {
+  token: null,
+  status: null
+});
 
 // Register to handle all updates
 AppDispatcher.on('all', function(eventName, payload) {
@@ -26,6 +29,15 @@ AppDispatcher.on('all', function(eventName, payload) {
   }
   SignInStore[actionName](payload);
 });
+
+var SignInStore = {
+  signin: function(username, password, remember) {
+    superagent
+      .post('http://localhost:3000/api/auth-token/')
+      .auth(username, password)
+      .end(makeLoginDigestFun(remember));
+  }
+};
 
 module.exports = SignInStore;
 
@@ -41,7 +53,7 @@ function makeLoginDigestFun(remember) {
 }
 
 function setToken(token, remember) {
-  _token = token;
+  model.auth.token.set(token);
   // store the token in Storage
   if (remember) {
       localStorage.setItem('TOKEN_STORAGE_KEY', token);
@@ -55,8 +67,8 @@ function setAuthStatus(status) {
   if (status !== 'AUTH.AUTHENTICATED') {
       localStorage.removeItem('TOKEN_STORAGE_KEY');
       sessionStorage.removeItem('TOKEN_STORAGE_KEY');
-      _token = null;
+      model.auth.token.set(null);
   }
   // push the auth change to the view, so it can be rendered
-  _status = status;
+  model.auth.status.set(status);
 }
