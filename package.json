@@ -15,7 +15,10 @@
     "gulp-webpack": "~0.1.0",
     "gulp": "~3.8.6",
     "del": "~0.1.1",
-    "cortexjs": "~0.6.0"
+    "cortexjs": "~0.6.0",
+    "backbone": "~1.1.2",
+    "jquery": "~2.1.1",
+    "underscore": "~1.6.0"
   },
   "devDependencies": {
     "supervisor": "~0.6.0",
