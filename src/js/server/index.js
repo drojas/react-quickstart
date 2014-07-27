@@ -20,7 +20,7 @@ if (development) {
 }
 
 app
-  .use('/assets', express.static(path.join(__dirname, 'assets')))
+  .use('/assets', express.static(path.join(__dirname, '../../../assets')))
   .use('/api', api)
   .use(renderApp)
   .listen(3000, function() {
