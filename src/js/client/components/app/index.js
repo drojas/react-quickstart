@@ -1,7 +1,7 @@
 'use strict';
 
 var React           = require('react');
-var AppRenderer     = require('./renderer')
+var model           = require('../../model');
 var PopStateMixin   = require('../mixins/pop-state');
 var RendererMixin   = require('../mixins/renderer');
 var MainPage        = require('../main-page');
@@ -9,7 +9,8 @@ var UserPage        = require('../user-page');
 var SignInPage      = require('../sign-in-page');
 var SignUpPage      = require('../sign-up-page');
 var NotFoundPage    = require('../not-found-page');
-var model           = require('../../model');
+var AppRenderer     = require('./renderer')
+var style           = require('./style');
 
 var App = React.createClass({
 
@@ -22,7 +23,7 @@ var App = React.createClass({
   getRenderOptions: function(){
     return {
       renderer: AppRenderer,
-      style:    '/assets/style.css',
+      mainStyle:    '/assets/style.css',
       bundle:   '/assets/bundle.js',
       handlers: {
         '/':                MainPage,
@@ -30,7 +31,8 @@ var App = React.createClass({
         '/sign-in':         SignInPage,
         '/users/:username': UserPage,
       },
-      notFound: NotFoundPage
+      notFound: NotFoundPage,
+      style: style
     };
   }
 });

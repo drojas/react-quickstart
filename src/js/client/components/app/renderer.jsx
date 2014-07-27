@@ -13,10 +13,10 @@ module.exports = function(options) {
   return (
     <html>
       <head>
-        <link rel="stylesheet" href={options.style} />
+        <link rel="stylesheet" href={options.mainStyle} />
         <script src={options.bundle} />
       </head>
-      <Pages className="App" path={this.props.path}>
+      <Pages className="App" path={this.props.path} style={options.style}>
         <Page path="/" handler={options.handlers['/']} />
         <Page path="/sign-up" handler={options.handlers['/sign-up']} />
         <Page path="/sign-in" handler={options.handlers['/sign-in']} />
