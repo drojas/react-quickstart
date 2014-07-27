@@ -10,17 +10,17 @@ var model         = require('../../model');
 
 model.addStore('signup', SignUpStore);
 
-var SignUpPage = React.createClass({displayName: 'SignUpPage',
+var SignUpPage = React.createClass({
 
   render: function() {
     return (
-      React.DOM.div({className: "SignUpPage"}, 
-        React.DOM.h1(null, "Sign Up"), 
-        React.DOM.input({type: "text", placeholder: "username", ref: "username"}), 
-        React.DOM.input({type: "text", placeholder: "password", ref: "password"}), 
-        React.DOM.input({type: "text", placeholder: "password confirmation", ref: "confirmation"}), 
-        React.DOM.input({type: "submit", onClick: this.handleSubmit})
-      )
+      <div className="SignUpPage">
+        <h1>Sign Up</h1>
+        <input type="text" placeholder="username" ref="username" />
+        <input type="text" placeholder="password" ref="password" />
+        <input type="text" placeholder="password confirmation" ref="confirmation" />
+        <input type="submit" onClick={this.handleSubmit} />
+      </div>
     );
   },
 

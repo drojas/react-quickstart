@@ -11,18 +11,18 @@ var Page        = ReactRouter.Page;
 
 module.exports = function(options) {
   return (
-    <html>
-      <head>
-        <link rel="stylesheet" href={options.style} />
-        <script src={options.bundle} />
-      </head>
-      <Pages className="App" path={this.props.path}>
-        <Page path="/" handler={options.handlers['/']} />
-        <Page path="/sign-up" handler={options.handlers['/sign-up']} />
-        <Page path="/sign-in" handler={options.handlers['/sign-in']} />
-        <Page path="/users/:username" handler={options.handlers['/users/:username']} />
-        <NotFound handler={options.notFound} />
-      </Pages>
-    </html>
+    React.DOM.html(null, 
+      React.DOM.head(null, 
+        React.DOM.link({rel: "stylesheet", href: options.style}), 
+        React.DOM.script({src: options.bundle})
+      ), 
+      Pages({className: "App", path: this.props.path}, 
+        Page({path: "/", handler: options.handlers['/']}), 
+        Page({path: "/sign-up", handler: options.handlers['/sign-up']}), 
+        Page({path: "/sign-in", handler: options.handlers['/sign-in']}), 
+        Page({path: "/users/:username", handler: options.handlers['/users/:username']}), 
+        NotFound({handler: options.notFound})
+      )
+    )
   )
 }

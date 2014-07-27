@@ -10,17 +10,17 @@ var model         = require('../../model');
 
 model.addStore('signin', SignInStore);
 
-var SignInPage = React.createClass({displayName: 'SignInPage',
+var SignInPage = React.createClass({
 
   render: function() {
     return (
-      React.DOM.div({className: "SignInPage"}, 
-        React.DOM.h1(null, "Sign In"), 
-        React.DOM.input({type: "text", placeholder: "username", ref: "username"}), 
-        React.DOM.input({type: "text", placeholder: "password", ref: "password"}), 
-        React.DOM.input({type: "checkbox", label: "remember", ref: "remember"}), 
-        React.DOM.input({type: "submit", onClick: this.handleSubmit})
-      )
+      <div className="SignInPage">
+        <h1>Sign In</h1>
+        <input type="text" placeholder="username" ref="username" />
+        <input type="text" placeholder="password" ref="password" />
+        <input type="checkbox" label="remember" ref="remember" />
+        <input type="submit" onClick={this.handleSubmit} />
+      </div>
     );
   },
 

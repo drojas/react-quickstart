@@ -2,7 +2,6 @@
 
 var path        = require('path');
 var express     = require('express');
-var nodejsx     = require('node-jsx').install();
 var api         = require('../api');
 var renderApp   = require('./middleware/render-app');
 

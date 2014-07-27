@@ -8,10 +8,11 @@ var MainPage        = require('../main-page');
 var UserPage        = require('../user-page');
 var SignInPage      = require('../sign-in-page');
 var SignUpPage      = require('../sign-up-page');
-var NotFoundHandler = require('../not-found');
+var NotFoundPage    = require('../not-found-page');
 var model           = require('../../model');
 
 var App = React.createClass({
+
   mixins: [
     model.getMixin(),
     PopStateMixin,
@@ -29,7 +30,7 @@ var App = React.createClass({
         '/sign-in':         SignInPage,
         '/users/:username': UserPage,
       },
-      notFound: NotFoundHandler
+      notFound: NotFoundPage
     };
   }
 });
