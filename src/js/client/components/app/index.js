@@ -22,17 +22,17 @@ var App = React.createClass({
 
   getRenderOptions: function(){
     return {
-      renderer: AppRenderer,
-      mainStyle:    '/assets/style.css',
-      bundle:   '/assets/bundle.js',
-      handlers: {
+      renderer:    AppRenderer,
+      notFound:    NotFoundPage,
+      inlineStyle: style,
+      bundle:      '/assets/bundle.js',
+      mainStyle:   '/assets/style.css',
+      routes: {
         '/':                MainPage,
         '/sign-up':         SignUpPage,
         '/sign-in':         SignInPage,
         '/users/:username': UserPage,
       },
-      notFound: NotFoundPage,
-      style: style
     };
   }
 });
