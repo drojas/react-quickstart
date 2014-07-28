@@ -6,6 +6,7 @@ var react         = require('gulp-react');
 var concat        = require('gulp-concat');
 var rimraf        = require('gulp-rimraf');
 var webpack       = require('gulp-webpack');
+var uglify        = require('gulp-uglifyjs');
 var replaceExt    = require('gulp-ext-replace');
 var clientConfig  = require('./webpack.client-config.js');
 
@@ -25,6 +26,9 @@ var paths = {
 gulp.task('build-client', ['clean-client', 'build-css', 'compile-jsx'], function() {
   return gulp.src(paths.client.entryPoint)
     .pipe(webpack(clientConfig))
+    .pipe(gulp.dest(paths.client.targetDirectoryName))
+    .pipe(uglify())
+    .pipe(replaceExt('.min.js'))
     .pipe(gulp.dest(paths.client.targetDirectoryName));
 });
 
