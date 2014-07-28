@@ -12,6 +12,13 @@ var NotFoundPage    = require('../not-found-page');
 var AppRenderer     = require('./renderer')
 var style           = require('./style');
 
+// @if NODE_ENV!='production'
+var bundleAsset = '/assets/bundle.js'
+// @endif
+// @if NODE_ENV='production'
+var bundleAsset = '/assets/bundle.min.js'
+// @endif
+
 var App = React.createClass({
 
   mixins: [
@@ -25,7 +32,7 @@ var App = React.createClass({
       renderer:    AppRenderer,
       notFound:    NotFoundPage,
       inlineStyle: style,
-      bundle:      '/assets/bundle.js',
+      bundle:      bundleAsset,
       mainStyle:   '/assets/style.css',
       routes: {
         '/':                MainPage,

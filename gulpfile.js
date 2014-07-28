@@ -31,8 +31,9 @@ var paths = {
 
 // build server
 gulp.task('build-server', ['build-client'], function() {
+  var relativeAssetsPath = paths.server.relativeAssetsPath;
   return gulp.src(paths.server.jsFiles)
-    .pipe(preprocess({context: { ASSETS_PATH: paths.server.relativeAssetsPath}}))
+    .pipe(preprocess({context: { ASSETS_PATH: relativeAssetsPath }}))
     .pipe(gulp.dest(paths.server.targetDirectoryName));
 });
 
