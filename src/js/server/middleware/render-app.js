@@ -1,8 +1,9 @@
+// todo: move to client/helpers/middleware
 'use strict';
 
 var url         = require('url');
 var ReactAsync  = require('react-async');
-var Client      = require('../../client');
+var Client      = require('../client');
 
 module.exports = function (req, res, next) {
   var path   = url.parse(req.url).pathname;

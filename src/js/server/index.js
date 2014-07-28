@@ -2,25 +2,33 @@
 
 var path        = require('path');
 var express     = require('express');
-var api         = require('../api');
+var api         = require('./api');
 var renderApp   = require('./middleware/render-app');
-
-var development = process.env.NODE_ENV !== 'production';
 
 var app = express();
 
-if (development) {
-  var webpack             = require("webpack");
-  var webpackMiddleware   = require('webpack-dev-middleware');
-  var webpackClientConfig = require('../../../webpack.client-config.js')
-  var clientCompiler      = webpack(webpackClientConfig);
-  app.use(webpackMiddleware(clientCompiler, {
-    publicPath: '/assets/'
-  }));
-}
+var assetsPath = path.join(__dirname,
+// @ifdef ASSETS_PATH
+// @echo ASSETS_PATH
+// @endif
+// @ifndef ASSETS_PATH
+'../../../build/assets'
+// @endif
+);
+
+// @if NODE_ENV!='production'
+// webpack middleware
+var webpack             = require("webpack");
+var webpackMiddleware   = require('webpack-dev-middleware');
+var webpackClientConfig = require('./webpack.client-config.js')
+var clientCompiler      = webpack(webpackClientConfig);
+app.use(webpackMiddleware(clientCompiler, {
+  publicPath: '/assets/'
+}));
+// @endif
 
 app
-  .use('/assets', express.static(path.join(__dirname, '../../../build/assets')))
+  .use('/assets', express.static(assetsPath))
   .use('/api', api)
   .use(renderApp)
   .listen(3000, function() {

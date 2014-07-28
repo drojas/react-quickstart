@@ -7,20 +7,34 @@ var concat        = require('gulp-concat');
 var rimraf        = require('gulp-rimraf');
 var webpack       = require('gulp-webpack');
 var uglify        = require('gulp-uglifyjs');
+var preprocess    = require('gulp-preprocess');
 var replaceExt    = require('gulp-ext-replace');
-var clientConfig  = require('./webpack.client-config.js');
+var clientConfig  = require('./src/js/server/webpack.client-config.js');
 
 // common paths
 var paths = {
   client: {
-    directoryName:       'src/js/client',
-    entryPoint:          'src/js/client/index.js',
-    jsxFiles:            'src/js/client/**/*.jsx',
-    cssFiles:            'src/js/client/**/*.css',
+    directoryName:       'src/js/server/client',
+    entryPoint:          'src/js/server/client/index.js',
+    jsxFiles:            'src/js/server/client/**/*.jsx',
+    cssFiles:            'src/js/server/client/**/*.css',
     targetDirectoryName: 'build/assets',
-    styleAssetName:      'style.css'
+    styleAssetName:      'style.css',
+    outputFilename:      clientConfig.output.filename
+  },
+  server: {
+    jsFiles:             'src/js/server/**/*.js',
+    targetDirectoryName: 'build/server',
+    relativeAssetsPath:  '"../assets"'
   }
 };
+
+// build server
+gulp.task('build-server', ['build-client'], function() {
+  return gulp.src(paths.server.jsFiles)
+    .pipe(preprocess({context: { ASSETS_PATH: paths.server.relativeAssetsPath}}))
+    .pipe(gulp.dest(paths.server.targetDirectoryName));
+});
 
 // build the app after taking care of css and jsx
 gulp.task('build-client', ['clean-client', 'build-css', 'compile-jsx'], function() {
@@ -49,10 +63,16 @@ gulp.task('build-css', ['clean-css'], function() {
 
 // cleaning
 
+// clean server build output
+gulp.task('clean-server', function() {
+  return gulp.src(paths.server.targetDirectoryName, { read: false })
+    .pipe(rimraf());
+});
+
 // clean client build output
 gulp.task('clean-client', function() {
   var outputFile = path.join(paths.client.targetDirectoryName,
-                              clientConfig.output.filename);
+                             paths.client.outputFilename);
   return gulp.src(outputFile, { read: false })
     .pipe(rimraf());
 });
@@ -72,4 +92,4 @@ gulp.task('clean-css', function() {
     .pipe(rimraf());
 });
 
-gulp.task('default', ['build-client']);
+gulp.task('default', ['build-server']);
