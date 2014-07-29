@@ -31,9 +31,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "supervisor -i node_modules -e js build/server/index.js",
-    "build": "gulp",
-    "start-prod": "NODE_ENV=production node src/js/server/index.js",
-    "clean": "rm -f ./assets/bundle.js"
+    "build": "NODE_ENV=production gulp",
+    "start-prod": "NODE_ENV=production node build/server/index.js",
+    "clean": "gulp clean"
   },
   "author": "",
   "license": "MIT"
