@@ -9,12 +9,12 @@ var webpack       = require('gulp-webpack');
 var uglify        = require('gulp-uglifyjs');
 var preprocess    = require('gulp-preprocess');
 var replaceExt    = require('gulp-ext-replace');
-var appConfig  = require('./src/js/server/webpack.app-config.js');
+var appConfig     = require('./src/js/server/webpack.app-config.js');
 
 // common paths
 var paths = {
   app: {
-    directoryName:       'src/js/server/app',
+    sourceDirectoryName: 'src/js/server/app',
     entryPoint:          'src/js/server/app/index.js',
     jsxFiles:            'src/js/server/app/**/*.jsx',
     cssFiles:            'src/js/server/app/**/*.css',
@@ -33,7 +33,7 @@ var paths = {
 gulp.task('build-server', ['build-app'], function() {
   var relativeAssetsPath = paths.server.relativeAssetsPath;
   return gulp.src(paths.server.jsFiles)
-    .pipe(preprocess({context: { ASSETS_PATH: relativeAssetsPath }}))
+    .pipe(preprocess({ context: { ASSETS_PATH: relativeAssetsPath }}))
     .pipe(gulp.dest(paths.server.targetDirectoryName));
 });
 
@@ -52,7 +52,7 @@ gulp.task('compile-jsx', ['clean-jsx'], function() {
   return gulp.src(paths.app.jsxFiles)
     .pipe(react())
     .pipe(replaceExt('.js'))
-    .pipe(gulp.dest(paths.app.directoryName));
+    .pipe(gulp.dest(paths.app.sourceDirectoryName));
 });
 
 // concat all css files from app into a main style
@@ -63,7 +63,6 @@ gulp.task('build-css', ['clean-css'], function() {
 });
 
 // cleaning
-// todo: use a makeCleaner(*args) helper
 
 // clean server build output
 gulp.task('clean-server', function() {
@@ -75,7 +74,9 @@ gulp.task('clean-server', function() {
 gulp.task('clean-app', function() {
   var outputFile = path.join(paths.app.targetDirectoryName,
                              paths.app.outputFilename);
-  return gulp.src(outputFile, { read: false })
+  var minifiedOutputFile = outputFile.replace(/.js$/, '.min.js');
+  var outputFiles = [outputFile, minifiedOutputFile];
+  return gulp.src(outputFiles, { read: false })
     .pipe(rimraf());
 });
 
@@ -89,9 +90,14 @@ gulp.task('clean-jsx', function() {
 // clean css build output
 gulp.task('clean-css', function() {
   var outputFile = path.join(paths.app.targetDirectoryName,
-                              paths.app.styleAssetName)
+                             paths.app.styleAssetName)
   return gulp.src(outputFile, { read: false })
     .pipe(rimraf());
+});
+
+// clean all output
+gulp.task('clean', ['clean-jsx'], function() {
+  return gulp.src('build').pipe(rimraf());
 });
 
 gulp.task('default', ['build-server']);
