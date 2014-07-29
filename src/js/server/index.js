@@ -20,9 +20,9 @@ var assetsPath = path.join(__dirname,
 // webpack middleware
 var webpack             = require("webpack");
 var webpackMiddleware   = require('webpack-dev-middleware');
-var webpackClientConfig = require('./webpack.client-config.js')
-var clientCompiler      = webpack(webpackClientConfig);
-app.use(webpackMiddleware(clientCompiler, {
+var webpackClientConfig = require('./webpack.app-config.js')
+var appCompiler      = webpack(webpackClientConfig);
+app.use(webpackMiddleware(appCompiler, {
   publicPath: '/assets/'
 }));
 // @endif

@@ -9,18 +9,18 @@ var webpack       = require('gulp-webpack');
 var uglify        = require('gulp-uglifyjs');
 var preprocess    = require('gulp-preprocess');
 var replaceExt    = require('gulp-ext-replace');
-var clientConfig  = require('./src/js/server/webpack.client-config.js');
+var appConfig  = require('./src/js/server/webpack.app-config.js');
 
 // common paths
 var paths = {
-  client: {
-    directoryName:       'src/js/server/client',
-    entryPoint:          'src/js/server/client/index.js',
-    jsxFiles:            'src/js/server/client/**/*.jsx',
-    cssFiles:            'src/js/server/client/**/*.css',
+  app: {
+    directoryName:       'src/js/server/app',
+    entryPoint:          'src/js/server/app/index.js',
+    jsxFiles:            'src/js/server/app/**/*.jsx',
+    cssFiles:            'src/js/server/app/**/*.css',
     targetDirectoryName: 'build/assets',
     styleAssetName:      'style.css',
-    outputFilename:      clientConfig.output.filename
+    outputFilename:      appConfig.output.filename
   },
   server: {
     jsFiles:             'src/js/server/**/*.js',
@@ -30,7 +30,7 @@ var paths = {
 };
 
 // build server
-gulp.task('build-server', ['build-client'], function() {
+gulp.task('build-server', ['build-app'], function() {
   var relativeAssetsPath = paths.server.relativeAssetsPath;
   return gulp.src(paths.server.jsFiles)
     .pipe(preprocess({context: { ASSETS_PATH: relativeAssetsPath }}))
@@ -38,31 +38,32 @@ gulp.task('build-server', ['build-client'], function() {
 });
 
 // build the app after taking care of css and jsx
-gulp.task('build-client', ['clean-client', 'build-css', 'compile-jsx'], function() {
-  return gulp.src(paths.client.entryPoint)
-    .pipe(webpack(clientConfig))
-    .pipe(gulp.dest(paths.client.targetDirectoryName))
+gulp.task('build-app', ['clean-app', 'build-css', 'compile-jsx'], function() {
+  return gulp.src(paths.app.entryPoint)
+    .pipe(webpack(appConfig))
+    .pipe(gulp.dest(paths.app.targetDirectoryName))
     .pipe(uglify())
     .pipe(replaceExt('.min.js'))
-    .pipe(gulp.dest(paths.client.targetDirectoryName));
+    .pipe(gulp.dest(paths.app.targetDirectoryName));
 });
 
 // compile jsx files in-place
 gulp.task('compile-jsx', ['clean-jsx'], function() {
-  return gulp.src(paths.client.jsxFiles)
+  return gulp.src(paths.app.jsxFiles)
     .pipe(react())
     .pipe(replaceExt('.js'))
-    .pipe(gulp.dest(paths.client.directoryName));
+    .pipe(gulp.dest(paths.app.directoryName));
 });
 
 // concat all css files from app into a main style
 gulp.task('build-css', ['clean-css'], function() {
-  return gulp.src(paths.client.cssFiles)
-    .pipe(concat(paths.client.styleAssetName))
-    .pipe(gulp.dest(paths.client.targetDirectoryName));
+  return gulp.src(paths.app.cssFiles)
+    .pipe(concat(paths.app.styleAssetName))
+    .pipe(gulp.dest(paths.app.targetDirectoryName));
 });
 
 // cleaning
+// todo: use a makeCleaner(*args) helper
 
 // clean server build output
 gulp.task('clean-server', function() {
@@ -70,25 +71,25 @@ gulp.task('clean-server', function() {
     .pipe(rimraf());
 });
 
-// clean client build output
-gulp.task('clean-client', function() {
-  var outputFile = path.join(paths.client.targetDirectoryName,
-                             paths.client.outputFilename);
+// clean app build output
+gulp.task('clean-app', function() {
+  var outputFile = path.join(paths.app.targetDirectoryName,
+                             paths.app.outputFilename);
   return gulp.src(outputFile, { read: false })
     .pipe(rimraf());
 });
 
 // clean jsx compilation output
 gulp.task('clean-jsx', function() {
-  return gulp.src(paths.client.jsxFiles, { read: false })
+  return gulp.src(paths.app.jsxFiles, { read: false })
     .pipe(replaceExt('.js'))
     .pipe(rimraf());
 });
 
 // clean css build output
 gulp.task('clean-css', function() {
-  var outputFile = path.join(paths.client.targetDirectoryName,
-                              paths.client.styleAssetName)
+  var outputFile = path.join(paths.app.targetDirectoryName,
+                              paths.app.styleAssetName)
   return gulp.src(outputFile, { read: false })
     .pipe(rimraf());
 });
