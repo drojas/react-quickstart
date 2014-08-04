@@ -3,7 +3,7 @@
 
 var url         = require('url');
 var ReactAsync  = require('react-async');
-var App         = require('../app');
+var App         = require('../application');
 
 module.exports = function (req, res, next) {
   var path = url.parse(req.url).pathname;

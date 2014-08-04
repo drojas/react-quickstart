@@ -14,10 +14,10 @@ var appConfig     = require('./src/js/server/webpack.app-config.js');
 // common paths
 var paths = {
   app: {
-    sourceDirectoryName: 'src/js/server/app',
-    entryPoint:          'src/js/server/app/index.js',
-    jsxFiles:            'src/js/server/app/**/*.jsx',
-    cssFiles:            'src/js/server/app/**/*.css',
+    sourceDirectoryName: 'src/js/server/application',
+    entryPoint:          'src/js/server/application/index.js',
+    jsxFiles:            'src/js/server/application/**/*.jsx',
+    cssFiles:            'src/js/server/application/**/*.css',
     targetDirectoryName: 'build/assets',
     styleAssetName:      'style.css',
     outputFilename:      appConfig.output.filename
