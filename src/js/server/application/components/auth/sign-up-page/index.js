@@ -6,7 +6,7 @@
 var React         = require('react');
 var SignUpActions = require('./actions');
 var SignUpStore   = require('./store');
-var model         = require('../../model');
+var model         = require('../../../model');
 
 model.addStore('signup', SignUpStore);
 

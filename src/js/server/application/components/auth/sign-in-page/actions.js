@@ -1,6 +1,6 @@
 'use strict';
 
-var AppDispatcher = require('../../dispatcher/app-dispatcher');
+var AppDispatcher = require('../../../dispatcher/app-dispatcher');
 
 var SigInActions = {
   signIn: function(username, password, remember) {

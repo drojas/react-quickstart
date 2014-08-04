@@ -1,7 +1,7 @@
 'use strict';
 
 var superagent = require('superagent');
-var navigate   = require('../../helpers/navigate');
+var navigate   = require('../../../helpers/navigate');
 
 var SignUpStore = {
   schema: { signup: { status: null } },
