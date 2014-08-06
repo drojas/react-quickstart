@@ -22,7 +22,8 @@
     "gulp-concat": "~2.3.4",
     "gulp-rimraf": "~0.1.0",
     "gulp-uglifyjs": "~0.4.2",
-    "gulp-preprocess": "~1.1.1"
+    "gulp-preprocess": "~1.1.1",
+    "preprocess-loader": "git://github.com/drojas/preprocess-loader"
   },
   "devDependencies": {
     "supervisor": "~0.6.0",

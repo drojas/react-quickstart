@@ -9,6 +9,7 @@ var NotFound    = ReactRouter.NotFound;
 var Pages       = ReactRouter.Pages;
 var Page        = ReactRouter.Page;
 
+// todo: refactor iterating options.routes
 module.exports = function(options) {
   return (
     React.DOM.html(null, 
