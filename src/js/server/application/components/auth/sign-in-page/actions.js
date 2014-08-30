@@ -1,14 +1,19 @@
 'use strict';
 
-var AppDispatcher = require('../../../dispatcher/app-dispatcher');
+var Dispatcher = require('../../../dispatcher');
 
 var SigInActions = {
   signIn: function(username, password, remember) {
-    AppDispatcher.trigger('signin', 'signin', {
-      username: username,
-      password: password,
-      remember: remember
-    });
+    var payload = {
+      store: 'signin',
+      action: 'signin',
+      data: {
+        username: username,
+        password: password,
+        remember: remember
+      }
+    }
+    Dispatcher.dispatch(payload);
   }
 };
 

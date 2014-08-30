@@ -14,8 +14,6 @@
     "gulp-webpack": "~0.1.0",
     "gulp": "~3.8.6",
     "cortexjs": "~0.6.0",
-    "backbone": "~1.1.2",
-    "jquery": "~2.1.1",
     "underscore": "~1.6.0",
     "gulp-ext-replace": "~0.1.0",
     "gulp-react": "~0.5.0",
@@ -23,7 +21,8 @@
     "gulp-rimraf": "~0.1.0",
     "gulp-uglifyjs": "~0.4.2",
     "gulp-preprocess": "~1.1.1",
-    "preprocess-loader": "git://github.com/drojas/preprocess-loader"
+    "preprocess-loader": "git://github.com/drojas/preprocess-loader",
+    "flux": "~2.0.0"
   },
   "devDependencies": {
     "supervisor": "~0.6.0",
@@ -31,8 +30,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "supervisor -i node_modules -e js build/server/index.js",
     "build": "NODE_ENV=production gulp",
+    "start": "supervisor -i node_modules -e js build/server/index.js",
+    "start-debug": "node debug build/server/index.js",
     "start-prod": "NODE_ENV=production node build/server/index.js",
     "clean": "gulp clean"
   },

@@ -3,13 +3,13 @@
 
 var _ = require('underscore');
 var Cortex = require('cortexjs');
-var AppDispatcher = require('../dispatcher/app-dispatcher');
+var Dispatcher = require('../dispatcher');
 
 var model = new Cortex({});
 
 // todo: refactor extending `Cortex.prototype`
 
-model.stores = {};
+var _stores = {};
 
 model.addStore = function(eventsNamespace, store) {
   // Merge schema from store into model
@@ -17,7 +17,7 @@ model.addStore = function(eventsNamespace, store) {
     model.add(key, store.schema[key]);
   });
   // keep a reference to the store
-  model.stores[eventsNamespace] = store;
+  _stores[eventsNamespace] = store;
 };
 
 model.getMixin = function() {
@@ -27,25 +27,10 @@ model.getMixin = function() {
       return model.val();
     },
 
-    listenToActionsAndCallStores: function() {
-      _.each(model.stores, function(store, eventsNamespace) {
-        AppDispatcher.on(eventsNamespace, function(actionName, payload) {
-          throwNoHandlerError(store, actionName)
-          store.handlers[actionName](model, payload);
-        });
-      });
-    },
-
     listenToModelAndSetState: function() {
       model.on('update', function(updatedModel) {
         this.setState(updatedModel.val());
       }.bind(this));
-    },
-
-    stopListeningToActions: function() {
-      _.each(model.stores, function(store, eventsNamespace) {
-        AppDispatcher.off(eventsNamespace);
-      });
     },
 
     stopListeningToModel: function() {
@@ -54,20 +39,28 @@ model.getMixin = function() {
 
     componentDidMount: function() {
       this.listenToModelAndSetState();
-      this.listenToActionsAndCallStores();
     },
 
     componentWillUnmount: function() {
-      this.stopListeningToActions();
       this.stopListeningToModel();
     }
   }
 };
 
+Dispatcher.register(routeActionsToStores);
+
 module.exports = model;
 
 // private methods
 
+function routeActionsToStores(payload) {
+  var store  = payload.store;
+  var action =  payload.action;
+  throwNoHandlerError(store, action);
+  _stores[store].handlers[action](model, payload.data);
+}
+
+// todo: use invariant instead
 function throwNoHandlerError(store, actionName) {
   if (!_.has(store.handlers, actionName)){
     var err = 'No handler function for `' + actionName + '` available in store.';
