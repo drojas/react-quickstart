@@ -1,9 +1,10 @@
 // todo: rename to "factory"?
 'use strict';
 
-var _ = require('underscore');
-var Cortex = require('cortexjs');
+var _          = require('underscore');
+var Cortex     = require('cortexjs');
 var Dispatcher = require('../dispatcher');
+var invariant  = require('flux/lib/invariant');
 
 var model = new Cortex({});
 
@@ -54,16 +55,13 @@ module.exports = model;
 // private methods
 
 function routeActionsToStores(payload) {
-  var store  = payload.store;
   var action =  payload.action;
-  throwNoHandlerError(store, action);
+  var store = _stores[payload.store];
+  invariant(
+    store && store.handlers && store.handlers[action],
+    'routeActionsToStores(...): cannot find a store `%s` with a handler `%s`.',
+    store,
+    action
+  );
   _stores[store].handlers[action](model, payload.data);
-}
-
-// todo: use invariant instead
-function throwNoHandlerError(store, actionName) {
-  if (!_.has(store.handlers, actionName)){
-    var err = 'No handler function for `' + actionName + '` available in store.';
-    throw new Error(err);
-  }
 }

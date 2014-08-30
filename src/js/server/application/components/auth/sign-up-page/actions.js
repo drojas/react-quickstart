@@ -13,6 +13,7 @@ var SignUpActions = {
         confirmation: confirmation
       }
     }
+
     Dispatcher.dispatch(payload);
   }
 };
