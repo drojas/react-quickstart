@@ -9,7 +9,7 @@ var superagent  = require('superagent');
 var ReactRouter = require('react-router-component');
 var Link        = ReactRouter.Link;
 
-var UserPage = React.createClass({displayName: 'UserPage',
+var UserPage = React.createClass({
   mixins: [ReactAsync.Mixin],
 
   statics: {
@@ -23,7 +23,7 @@ var UserPage = React.createClass({displayName: 'UserPage',
   },
 
   getInitialStateAsync: function(cb) {
-    this.type.getUserInfo(this.props.username, cb);
+    UserPage.getUserInfo(this.props.username, cb);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -40,13 +40,13 @@ var UserPage = React.createClass({displayName: 'UserPage',
   render: function() {
     var otherUser = this.props.username === 'doe' ? 'ivan' : 'doe';
     return (
-      React.DOM.div({className: "UserPage"}, 
-        React.DOM.h1(null, "Hello, ", this.state.name, "!"), 
-        React.DOM.p(null, 
-          "Go to ", Link({href: "/users/" + otherUser}, "/users/", otherUser)
-        ), 
-        React.DOM.p(null, Link({href: "/"}, "Logout"))
-      )
+      <div className="UserPage">
+        <h1>Hello, {this.state.name}!</h1>
+        <p>
+          Go to <Link href={"/users/" + otherUser}>/users/{otherUser}</Link>
+        </p>
+        <p><Link href="/">Logout</Link></p>
+      </div>
     );
   }
 });
