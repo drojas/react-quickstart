@@ -15,13 +15,9 @@ var Model = {
 }
 
 Model.Mixin = {
-  getInitialState: function() {
-    return _state.val();
-  },
-
   listenToModelState: function() {
-    _state.on('update', function(updatedModel) {
-      this.setState(updatedModel.val());
+    _state.on('update', function() {
+      this.forceUpdate();
     }.bind(this));
   },
 

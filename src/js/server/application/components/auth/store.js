@@ -1,5 +1,7 @@
 'use strict';
 
+// todo: get token from storage (server and client)
+
 var superagent = require('superagent');
 var navigate   = require('../../helpers/navigate');
 
@@ -68,9 +70,9 @@ function setToken(authState, token, remember) {
   authState.signin.token.set(token);
   // store the token in Storage
   if (remember) {
-      localStorage.setItem('TOKEN_STORAGE_KEY', token);
+    localStorage.setItem('TOKEN_STORAGE_KEY', token);
   } else {
-      sessionStorage.setItem('TOKEN_STORAGE_KEY', token);
+    sessionStorage.setItem('TOKEN_STORAGE_KEY', token);
   }
 }
 
