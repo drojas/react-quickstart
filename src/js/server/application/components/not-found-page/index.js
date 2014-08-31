@@ -5,11 +5,11 @@
 
 var React       = require('react');
 
-var NotFoundHandler = React.createClass({displayName: 'NotFoundHandler',
+var NotFoundHandler = React.createClass({
 
   render: function() {
     return (
-      React.DOM.p(null, "Page not found")
+      <p>Page not found</p>
     );
   }
 });

@@ -33,26 +33,19 @@ var paths = {
 gulp.task('build-server', ['build-app'], function() {
   var relativeAssetsPath = paths.server.relativeAssetsPath;
   return gulp.src(paths.server.jsFiles)
+    .pipe(react())
     .pipe(preprocess({ context: { ASSETS_PATH: relativeAssetsPath }}))
     .pipe(gulp.dest(paths.server.targetDirectoryName));
 });
 
 // build the app after taking care of css and jsx
-gulp.task('build-app', ['clean-app', 'build-css', 'compile-jsx'], function() {
+gulp.task('build-app', ['clean-app', 'build-css'], function() {
   return gulp.src(paths.app.entryPoint)
     .pipe(webpack(appConfig))
     .pipe(gulp.dest(paths.app.targetDirectoryName))
     .pipe(uglify())
     .pipe(replaceExt('.min.js'))
     .pipe(gulp.dest(paths.app.targetDirectoryName));
-});
-
-// compile jsx files in-place
-gulp.task('compile-jsx', ['clean-jsx'], function() {
-  return gulp.src(paths.app.jsxFiles)
-    .pipe(react())
-    .pipe(replaceExt('.js'))
-    .pipe(gulp.dest(paths.app.sourceDirectoryName));
 });
 
 // concat all css files from app into a main style
@@ -77,13 +70,6 @@ gulp.task('clean-app', function() {
   var minifiedOutputFile = outputFile.replace(/.js$/, '.min.js');
   var outputFiles = [outputFile, minifiedOutputFile];
   return gulp.src(outputFiles, { read: false })
-    .pipe(rimraf());
-});
-
-// clean jsx compilation output
-gulp.task('clean-jsx', function() {
-  return gulp.src(paths.app.jsxFiles, { read: false })
-    .pipe(replaceExt('.js'))
     .pipe(rimraf());
 });
 

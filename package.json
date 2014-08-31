@@ -1,5 +1,5 @@
 {
-  "name": "react-quickstart",
+  "name": "react-flux-quickstart",
   "version": "0.0.0",
   "description": "React project",
   "dependencies": {
@@ -22,7 +22,8 @@
     "gulp-uglifyjs": "~0.4.2",
     "gulp-preprocess": "~1.1.1",
     "preprocess-loader": "git://github.com/drojas/preprocess-loader",
-    "flux": "~2.0.0"
+    "flux": "~2.0.0",
+    "node-jsx": "~0.11.0"
   },
   "devDependencies": {
     "supervisor": "~0.6.0",
@@ -32,8 +33,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production gulp",
     "start": "supervisor -i node_modules -e js build/server/index.js",
-    "start-debug": "node debug build/server/index.js",
     "start-prod": "NODE_ENV=production node build/server/index.js",
+    "start-dev": "supervisor -i node_modules -e js src/js/server/index.js",
+    "start-debug": "node debug src/js/server/index.js",
     "clean": "gulp clean"
   },
   "author": "",

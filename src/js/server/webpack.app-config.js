@@ -1,7 +1,8 @@
 'use strict';
 
-var path = require('path');
+var path             = require('path');
 var preprocessLoader = require('preprocess-loader');
+var jsxLoader        = require('jsx-loader');
 
 module.exports = {
   entry: './src/js/server/application/index.js',
@@ -11,7 +12,7 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'preprocess-loader' }
+      { test: /\.js$/, loaders: ['preprocess-loader', 'jsx-loader'] }
     ]
   }
 };
