@@ -12,18 +12,18 @@ var AuthStore = {
   },
 
   handlers: {
-    signup: function(model, userData) {
+    signup: function(authState, userData) {
       superagent
         .post('http://localhost:3000/api/sign-up/')
         .send(userData)
-        .end(makeSignUpDigestFun(model));
+        .end(makeSignUpDigestFun(authState));
     },
 
-    signin: function(model, userData) {
+    signin: function(authState, userData) {
       superagent
         .post('http://localhost:3000/api/auth-token/')
         .auth(userData.username, userData.password)
-        .end(makeLoginDigestFun(model, userData.remember));
+        .end(makeLoginDigestFun(authState, userData.remember));
     }
   }
 };
@@ -34,38 +34,38 @@ module.exports = AuthStore;
 
 // signup stuff
 
-function makeSignUpDigestFun(model) {
+function makeSignUpDigestFun(authState) {
   return function (err, res) {
     if (!res.ok) {
-      setSignUpStatus(model, 'SIGNUP.FAILED');
+      setSignUpStatus(authState, 'SIGNUP.FAILED');
     } else {
-      setSignUpStatus(model, 'SIGNUP.OK');
+      setSignUpStatus(authState, 'SIGNUP.OK');
       navigate('/sign-in');
     }
   };
 }
 
-function setSignUpStatus(model, status) {
+function setSignUpStatus(authState, status) {
   // push the auth change to the view, so it can be rendered
-  model.auth.signup.status.set(status);
+  authState.signup.status.set(status);
 }
 
 // signin stuff
 
-function makeLoginDigestFun(model, remember) {
+function makeLoginDigestFun(authState, remember) {
   return function (err, res) {
     if (!res.ok) {
-      setAuthStatus(model, 'AUTH.FAILED');
+      setAuthStatus(authState, 'AUTH.FAILED');
     } else {
-      setToken(model, res.body.token, remember);
-      setAuthStatus(model, 'AUTH.AUTHENTICATED');
+      setToken(authState, res.body.token, remember);
+      setAuthStatus(authState, 'AUTH.AUTHENTICATED');
       navigate('/')
     }
   };
 }
 
-function setToken(model, token, remember) {
-  model.auth.signin.token.set(token);
+function setToken(authState, token, remember) {
+  authState.signin.token.set(token);
   // store the token in Storage
   if (remember) {
       localStorage.setItem('TOKEN_STORAGE_KEY', token);
@@ -74,13 +74,13 @@ function setToken(model, token, remember) {
   }
 }
 
-function setAuthStatus(model, status) {
+function setAuthStatus(authState, status) {
   // remove the token from system if you are not authenticated
   if (status !== 'AUTH.AUTHENTICATED') {
       localStorage.removeItem('TOKEN_STORAGE_KEY');
       sessionStorage.removeItem('TOKEN_STORAGE_KEY');
-      model.auth.token.set(null);
+      authState.token.set(null);
   }
   // push the auth change to the view, so it can be rendered
-  model.auth.signin.status.set(status);
+  authState.signin.status.set(status);
 }

@@ -3,12 +3,12 @@
  */
 'use strict';
 
-var model      = require('../../model');
+var Model      = require('../../model');
 var AuthStore  = require('./store');
 var SignInPage = require('./sign-in-page');
 var SignUpPage = require('./sign-up-page');
 
-model.addStore('auth', AuthStore);
+Model.addStore('auth', AuthStore);
 
 var AuthPages = {
   SignInPage: SignInPage,

@@ -6,36 +6,37 @@ var Cortex     = require('cortexjs');
 var Dispatcher = require('../dispatcher');
 var invariant  = require('flux/lib/invariant');
 
-var model = new Cortex({});
-
-// todo: refactor extending `Cortex.prototype`
-
+var _state  = new Cortex({});
 var _stores = {};
 
-model.addStore = function(eventsNamespace, store) {
-  // Merge schema from store into model
+var Model = {
+  state: _state
+}
+
+Model.addStore = function(eventsNamespace, store) {
+  // Merge schema from store into Model
   _.each(_.keys(store.schema), function (key) {
-    model.add(key, store.schema[key]);
+    _state.add(key, store.schema[key]);
   });
   // keep a reference to the store
   _stores[eventsNamespace] = store;
 };
 
-model.getMixin = function() {
+Model.getMixin = function() {
   return {
 
     getInitialState: function() {
-      return model.val();
+      return _state.val();
     },
 
     listenToModelAndSetState: function() {
-      model.on('update', function(updatedModel) {
+      _state.on('update', function(updatedModel) {
         this.setState(updatedModel.val());
       }.bind(this));
     },
 
     stopListeningToModel: function() {
-      model.off('update');
+      _state.off('update');
     },
 
     componentDidMount: function() {
@@ -50,7 +51,7 @@ model.getMixin = function() {
 
 Dispatcher.register(routeActionsToStores);
 
-module.exports = model;
+module.exports = Model;
 
 // private methods
 
@@ -63,5 +64,5 @@ function routeActionsToStores(payload) {
     store,
     action
   );
-  store.handlers[action](model, payload.data);
+  store.handlers[action](_state[payload.store], payload.data);
 }

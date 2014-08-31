@@ -6,7 +6,6 @@
 var React         = require('react');
 var model         = require('../../model');
 var PopStateMixin = require('../mixins/pop-state');
-var RendererMixin = require('../mixins/renderer');
 
 var ReactRouter = require('react-router-component');
 var NotFound    = ReactRouter.NotFound;
