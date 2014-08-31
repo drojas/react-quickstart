@@ -63,5 +63,5 @@ function routeActionsToStores(payload) {
     store,
     action
   );
-  _stores[store].handlers[action](model, payload.data);
+  store.handlers[action](model, payload.data);
 }

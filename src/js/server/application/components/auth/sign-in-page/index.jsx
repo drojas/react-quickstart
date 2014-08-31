@@ -3,12 +3,8 @@
  */
 'use strict';
 
-var React         = require('react');
-var SignInActions = require('./actions');
-var SignInStore   = require('./store');
-var model         = require('../../../model');
-
-model.addStore('signin', SignInStore);
+var React       = require('react');
+var AuthActions = require('../actions');
 
 var SignInPage = React.createClass({
 
@@ -28,7 +24,7 @@ var SignInPage = React.createClass({
     var username = this.refs.username.getDOMNode().value;
     var password = this.refs.password.getDOMNode().value;
     var remember = this.refs.remember.getDOMNode().checked;
-    SignInActions.signIn(username, password, remember);
+    AuthActions.signIn(username, password, remember);
   }
 });
 
