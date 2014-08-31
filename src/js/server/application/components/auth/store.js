@@ -4,11 +4,11 @@ var superagent = require('superagent');
 var navigate   = require('../../helpers/navigate');
 
 var AuthStore = {
+  key: 'auth',
+
   schema: {
-    auth: {
-      signup: { status: null },
-      signin: { token: null, status: null }
-    }
+    signup: { status: null },
+    signin: { token: null, status: null }
   },
 
   handlers: {

@@ -4,7 +4,7 @@
 'use strict';
 
 var React         = require('react');
-var model         = require('../../model');
+var Model         = require('../../model');
 var PopStateMixin = require('../mixins/pop-state');
 
 var ReactRouter = require('react-router-component');
@@ -32,7 +32,7 @@ var mainStyle = '/assets/style.css';
 var App = React.createClass({displayName: 'App',
 
   mixins: [
-    model.getMixin(),
+    Model.Mixin,
     PopStateMixin
   ],
 

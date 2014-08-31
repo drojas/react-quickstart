@@ -3,49 +3,38 @@
 
 var _          = require('underscore');
 var Cortex     = require('cortexjs');
-var Dispatcher = require('../dispatcher');
 var invariant  = require('flux/lib/invariant');
+var Dispatcher = require('../dispatcher');
 
 var _state  = new Cortex({});
 var _stores = {};
 
 var Model = {
-  state: _state
+  state: _state,
+  registerStore: registerStore
 }
 
-Model.addStore = function(eventsNamespace, store) {
-  // Merge schema from store into Model
-  _.each(_.keys(store.schema), function (key) {
-    _state.add(key, store.schema[key]);
-  });
-  // keep a reference to the store
-  _stores[eventsNamespace] = store;
-};
+Model.Mixin = {
+  getInitialState: function() {
+    return _state.val();
+  },
 
-Model.getMixin = function() {
-  return {
+  listenToModelState: function() {
+    _state.on('update', function(updatedModel) {
+      this.setState(updatedModel.val());
+    }.bind(this));
+  },
 
-    getInitialState: function() {
-      return _state.val();
-    },
+  stopListeningToModelState: function() {
+    _state.off('update');
+  },
 
-    listenToModelAndSetState: function() {
-      _state.on('update', function(updatedModel) {
-        this.setState(updatedModel.val());
-      }.bind(this));
-    },
+  componentDidMount: function() {
+    this.listenToModelState();
+  },
 
-    stopListeningToModel: function() {
-      _state.off('update');
-    },
-
-    componentDidMount: function() {
-      this.listenToModelAndSetState();
-    },
-
-    componentWillUnmount: function() {
-      this.stopListeningToModel();
-    }
+  componentWillUnmount: function() {
+    this.stopListeningToModelState();
   }
 };
 
@@ -55,11 +44,28 @@ module.exports = Model;
 
 // private methods
 
+function registerStore(store) {
+  invariant(
+    typeof store        === 'object' &&
+    typeof store.key    === 'string' &&
+    typeof store.schema === 'object',
+    'registerStore(...): invalid store `%s`.',
+    store
+  );
+
+  // Merge schema from store into Model
+  _state.add([store.key], store.schema)
+
+  // save a reference to the store
+  _stores[store.key] = store;
+};
+
 function routeActionsToStores(payload) {
   var action =  payload.action;
-  var store = _stores[payload.store];
+  var store  = _stores[payload.store];
   invariant(
-    store && store.handlers && store.handlers[action],
+    typeof store.handlers         === 'object' &&
+    typeof store.handlers[action] === 'function',
     'routeActionsToStores(...): cannot find a store `%s` with a handler `%s`.',
     store,
     action
