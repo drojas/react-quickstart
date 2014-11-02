@@ -28,7 +28,7 @@ var UserPage = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     if (this.props.username !== nextProps.username) {
-      this.type.getUserInfo(nextProps.username, function(err, info) {
+      UserPage.getUserInfo(nextProps.username, function(err, info) {
         if (err) {
           throw err;
         }
